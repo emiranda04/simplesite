@@ -1,0 +1,6 @@
+{
+    "static_site": {
+        "build_command": "bash scripts/build.bash",
+        "output_dir": "dist"
+    }
+}
