@@ -1,6 +1,5 @@
 dist/
 node_modules/
-scripts
 /tailwindcss-linux-x64
 /tailwindcss-macos-arm64
 .idea
