@@ -1,2 +1,2 @@
 # Simplesite
-Signining commits with GPG key.
+Signing commits with GPG key.
