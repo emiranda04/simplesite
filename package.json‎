@@ -1,0 +1,6 @@
+"name": "simplesite",
+ "version": "1.0.0",
+ "scripts": {
+    "build": "bash scripts/build.bash"
+  }
+}
