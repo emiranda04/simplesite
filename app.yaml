@@ -3,7 +3,10 @@ static_sites:
   - name: web
     source_dir: /
     output_dir: dist
-    build_command: bash scripts/build.bash
-    environment_slug: html
-    routes:
-      - path: /
+    build_command: npm run build
+    index_document: index.html
+    error_document: index.html
+    github:
+      repo: emiranda04/simplesite
+      branch: main
+      deploy_on_push: true
