@@ -1,6 +1,20 @@
-"name": "simplesite",
- "version": "1.0.0",
- "scripts": {
-    "build": "./scripts/build.bash"
-  }
+{
+  "name": "simplesite",
+  "version": "1.0.0",
+  "description": "A static site built with Tailwind CSS",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "./scripts/build.bash",
+    "start": "echo 'Static site build completed'"
+  },
+  "keywords": ["static-site", "tailwindcss"],
+  "author": "emiranda04",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  },
+  "dependencies": {}
 }

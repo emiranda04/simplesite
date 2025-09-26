@@ -1,11 +1,15 @@
 name: simplesite
-static_sites:
+services:
   - name: web
+    environment_slug: node-js
     source_dir: /
-    output_dir: dist
     build_command: npm run build
-    index_document: index.html
-    error_document: index.html
+    output_dir: dist
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
     github:
       repo: emiranda04/simplesite
       branch: main
