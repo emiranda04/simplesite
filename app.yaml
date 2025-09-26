@@ -1,8 +1,7 @@
 name: seahorse-app
-services:
+static_sites:
   - name: web
-    image: registry.digitalocean.com/logicapp/simplesite:latest
     source_dir: /
-    http_port: 8080
-    instance_count: 1
-    instance_size_slug: basic-xxs
+    output_dir: dist  # This tells DO to serve from the dist directory
+    routes:
+      - path: /

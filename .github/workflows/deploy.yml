@@ -1,40 +1,29 @@
-name: Deploy to Digital Ocean Apps
+name: Build with Docker, Deploy as Static Site
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      - name: Build static files using Docker
+        run: |
+          # Use a Node.js Docker container to build your site
+          docker run --rm -v $(pwd):/app -w /app node:18-alpine \
+            sh -c "npm install && npx tailwindcss -i ./src/styles/input.css -o ./dist/styles/output.css --minify && cp src/*.html dist/"
 
-      - name: Login to Digital Ocean Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: registry.digitalocean.com
-          username: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          password: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: registry.digitalocean.com/logicapp/simplesite:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - name: Verify built files
+        run: |
+          ls -la dist/
+          echo "Build completed successfully!"
 
       - name: Deploy to Digital Ocean Apps
         uses: digitalocean/app_action@v1
         with:
-          app_name: seahorse-app  # ← Changed to your actual app name
+          app_name: seahorse-app
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
