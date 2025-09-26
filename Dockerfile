@@ -1,35 +1,30 @@
-# Use Node.js as base image for building
-FROM node:18-alpine as builder
+# Build stage - use Node Alpine just for Tailwind CLI
+FROM node:18-alpine AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json first (for better caching)
-COPY package.json ./
+# Create a minimal package.json for Tailwind
+RUN echo '{"devDependencies":{"tailwindcss":"^3.4.0"}}' > package.json
 
-# Install dependencies if any
-RUN npm install || true
+# Install Tailwind CSS
+RUN npm install
 
-# Copy source files
-COPY . .
+# Copy config and source files
+COPY tailwind.config.js .
+COPY src/ ./src/
 
-# Make build script executable
-RUN chmod +x scripts/build.bash
+# Create dist directory and build
+RUN mkdir -p dist/styles
+RUN cp src/*.html dist/
+RUN npx tailwindcss -i ./src/styles/input.css -o ./dist/styles/output.css --minify
 
-# Run the build script
-RUN ./scripts/build.bash
-
-# Use nginx to serve the static files
+# Production stage - pure nginx, no Node
 FROM nginx:alpine
-
-# Copy built files from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration (optional - nginx default works fine)
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose port 80
 EXPOSE 80
-
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,40 @@
+name: Deploy to Digital Ocean Apps
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Digital Ocean Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: registry.digitalocean.com
+          username: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          password: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY_NAME }}/simplesite:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Deploy to Digital Ocean Apps
+        uses: digitalocean/app_action@v1
+        with:
+          app_name: simplesite
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}

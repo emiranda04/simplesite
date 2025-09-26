@@ -1,7 +1,39 @@
 dist/
 node_modules/
-/tailwindcss-linux-x64
-/tailwindcss-macos-arm64
-.idea
+
 tailwindcss-*
 
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.staging
+
+# Docker
+.dockerignore
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+/.well-known/
+/scripts/
