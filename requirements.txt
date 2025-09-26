@@ -1,2 +1,0 @@
-# This file helps DigitalOcean detect the project
-static-site==1.0
