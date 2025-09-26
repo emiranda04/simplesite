@@ -8,29 +8,28 @@ CHECK="✓"
 CROSS="✗"
 
 echo "🚀 Starting build script with Tailwind CSS v3.4.0..."
-echo
 
 # Get the project root directory (one level up from scripts/)
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 echo "📁 Project root: $PROJECT_ROOT"
-echo
+SCRIPTS_DIR="$PROJECT_ROOT/scripts"
+echo "📁 Scripts directory: $SCRIPTS_DIR"
 
-# Change to project root directory
-cd "$PROJECT_ROOT"
-
-# Since DigitalOcean will build using Linux, but you develop on macOS, download both:
+: <<'COMMENT'
+# Since DigitalOcean will build using Linux, but we develop on macOS, download both:
 echo "📦 Downloading tailwindcss for linux..."
-curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.0/tailwindcss-linux-x64
+curl -sL -o "$SCRIPTS_DIR/tailwindcss-linux-x64" https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.0/tailwindcss-linux-x64
 echo -e "${GREEN}${CHECK} Downloaded tailwindcss for linux."
 
 echo "📦 Downloading tailwindcss for mac-os..."
-curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.0/tailwindcss-macos-arm64
+curl -sL -o "$SCRIPTS_DIR/tailwindcss-macos-arm64" https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.0/tailwindcss-macos-arm64
 echo -e "${GREEN}${CHECK} Downloaded tailwindcss for mac-os."
+COMMENT
 
 # Assign permissions.
 echo "🔒 Assigning permissions to tailwindcss files..."
-chmod +x tailwindcss-linux-x64
-chmod +x tailwindcss-macos-arm64
+chmod +x SCRIPTS_DIR/tailwindcss-linux-x64
+chmod +x SCRIPTS_DIR/tailwindcss-macos-arm64
 echo -e "${GREEN}${CHECK} Assigned permissions to tailwindcss files."
 echo
 
@@ -39,15 +38,15 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS
     if [[ $(uname -m) == "arm64" ]]; then
         echo "🍎 Using macOS ARM64 binary..."
-        TAILWIND_BINARY="./tailwindcss-macos-arm64"
+        TAILWIND_BINARY="${SCRIPTS_DIR}/tailwindcss-macos-arm64"
     else
         echo "🍎 Using macOS Intel binary..."
-        TAILWIND_BINARY="./tailwindcss-macos-x64"
+        TAILWIND_BINARY="${SCRIPTS_DIR}/tailwindcss-macos-x64"
     fi
 else
     # Linux
     echo "🐧 Using Linux binary..."
-    TAILWIND_BINARY="./tailwindcss-linux-x64"
+    TAILWIND_BINARY="${SCRIPTS_DIR}/tailwindcss-linux-x64"
 fi
 
 # Check if the binary exists and is executable

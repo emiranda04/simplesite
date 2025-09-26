@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # Script is in scripts/, so go up one level to project root
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 WELL_KNOWN_DIR="$PROJECT_ROOT/.well-known"
