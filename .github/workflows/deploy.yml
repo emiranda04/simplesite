@@ -36,5 +36,5 @@ jobs:
       - name: Deploy to Digital Ocean Apps
         uses: digitalocean/app_action@v1
         with:
-          app_name: simplesite
+          app_name: seahorse-app  # ← Changed to your actual app name
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
